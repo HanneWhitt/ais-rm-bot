@@ -10,7 +10,7 @@ from datetime import datetime
 import os
 
 # Configuration
-SLACK_BOT_TOKEN = os.getenv('SLACK_API_TOKEN')
+SLACK_BOT_TOKEN = os.getenv('SLACK_BOT_TOKEN')
 CHANNEL_NAME = "#hannes-dev-channel"
 
 def send_slack_message(channel, text, blocks=None):
