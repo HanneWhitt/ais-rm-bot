@@ -10,7 +10,7 @@ messages:
   - name: "test_weekly_message"
     schedule:
       day: "saturday"
-      time: "15:29"
+      time: "15:48"
     channel: "#hannes-dev-channel"
     content:
       type: "blocks"
