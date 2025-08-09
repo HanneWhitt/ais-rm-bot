@@ -8,14 +8,14 @@ on:
     - cron: '44 14 * * 6'  # test_weekly_message - Weekly - saturday at 15:44 (BST period)
     - cron: '44 15 * * 6'  # test_weekly_message - Weekly - saturday at 15:44 (GMT period)
     
-  # Allow manual triggering
-  workflow_dispatch:
-    inputs:
-      dry_run:
-        description: 'Run in dry-run mode (show what would be sent)'
-        required: false
-        default: 'false'
-        type: boolean
+  # # Allow manual triggering
+  # workflow_dispatch:
+  #   inputs:
+  #     dry_run:
+  #       description: 'Run in dry-run mode (show what would be sent)'
+  #       required: false
+  #       default: 'false'
+  #       type: boolean
 
 jobs:
   send-slack-messages:
