@@ -12,7 +12,7 @@ SCOPES = [
 ]
 
 def authenticate():
-    """Authenticate with Google APIs"""
+    """Authenticate with Google APIs - handles both local and headless environments"""
     creds = None
     
     # Check if token.json exists (stored credentials)
@@ -22,11 +22,47 @@ def authenticate():
     # If there are no valid credentials, get them
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            # Download credentials.json from Google Cloud Console
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
+            try:
+                creds.refresh(Request())
+                # Save refreshed credentials
+                with open('token.json', 'w') as token:
+                    token.write(creds.to_json())
+                print("Credentials refreshed successfully!")
+            except Exception as e:
+                print(f"Token refresh failed: {e}")
+                creds = None
+        
+        if not creds:
+            # Try headless flow first
+            try:
+                flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+                
+                # For headless environments, use manual flow
+                flow.redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'  # Out-of-band flow
+                
+                auth_url, _ = flow.authorization_url(prompt='consent')
+                
+                print("\n" + "="*60)
+                print("MANUAL AUTHENTICATION REQUIRED")
+                print("="*60)
+                print(f"1. Open this URL in a browser on ANY device:")
+                print(f"\n{auth_url}\n")
+                print("2. Complete the authentication process")
+                print("3. Copy the authorization code from the browser")
+                print("4. Paste it below")
+                print("="*60)
+                
+                code = input("Enter the authorization code: ").strip()
+                
+                flow.fetch_token(code=code)
+                creds = flow.credentials
+                
+            except Exception as e:
+                print(f"Manual authentication failed: {e}")
+                print("Falling back to local server method...")
+                # Fallback to original method (will fail on headless but good for local development)
+                flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+                creds = flow.run_local_server(port=0)
         
         # Save credentials for next run
         with open('token.json', 'w') as token:
