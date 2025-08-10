@@ -1,0 +1,69 @@
+messages:
+  - id: weekly_cot_health_agenda
+    enabled: true
+    schedule:
+      type: recurring
+      time: "17:25"
+      timezone: "UTC"  # Consider adding timezone
+      day: "Sunday"
+      frequency: weekly
+      end_date: "2025-10-01"
+    channel:
+      app: slack
+      workspace: Meridian
+      channel: "#hannes-dev-channel"
+    content:
+      text: "Hey! Here's an agenda @Hannes Whittingham {date} {date_tomorrow} {google_doc}"
+      blocks: null
+      display_name: null
+      icon: null
+    google_doc:
+      template_id: 1yET-KNf8X5gqp4qSsSHxNdipa49mlAc5xzoxVJu_Aho
+      new_name: "{date_tomorrow_storage} | [MARS] CoT Health Metrics Check-in"
+      destination_folder_id: 1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ
+    replacements:
+      meeting_name: "{date_tomorrow} | [MARS] CoT Health Metrics Check-in"
+      attendees_commas: "David, Linh, Ida, Manqing, Edward, Cam, Puria, Hannes"
+
+
+  # - id: project_status_update
+  #   enabled: true
+  #   channel:
+  #     app: slack
+  #     workspace: Meridian
+  #     channel: "#hannes-dev-channel"
+  #   schedule:
+  #     type: recurring
+  #     time: "09:00"
+  #     timezone: "UTC"
+  #     day: "Monday"
+  #     frequency: weekly
+  #     end_date: "2025-12-31"
+  #   content:
+  #     text: "Weekly Project Status Update"
+  #     display_name: "Project Bot"
+  #     icon: ":chart_with_upwards_trend:"
+  #     blocks:
+  #       - type: "header"
+  #         text:
+  #           type: "plain_text"
+  #           text: "📊 Weekly Project Status"
+  #       - type: "section"
+  #         text:
+  #           type: "mrkdwn"
+  #           text: "*Priority Items for This Week:*\n• Review sprint goals\n• Update project timeline\n• Schedule team sync\n\n*Blockers:* None currently\n\n*Next Milestone:* Feature freeze on `2025-08-20`"
+  #       - type: "section"
+  #         text:
+  #           type: "mrkdwn"
+  #           text: "Hey @Hannes Whittingham - please review the updated roadmap in the shared drive."
+  #         accessory:
+  #           type: "button"
+  #           text:
+  #             type: "plain_text"
+  #             text: "View Roadmap"
+  #           url: "https://drive.google.com/example"
+  #       - type: "divider"
+  #       - type: "context"
+  #         elements:
+  #           - type: "mrkdwn"
+  #             text: "Last updated: <!date^1691650800^{date_short} at {time}|August 10, 2025>"

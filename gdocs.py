@@ -4,6 +4,7 @@ from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
+from replacements import get_default_replacements
 
 # Scopes needed for Google Drive and Docs APIs
 SCOPES = [
@@ -87,8 +88,14 @@ def copy_document(drive_service, template_id, new_name, destination_folder_id=No
     
     return copied_doc['id']
 
-def replace_text_in_document(docs_service, document_id, replacements):
+def replace_text_in_document(docs_service, document_id, replacements=None):
     """Replace placeholder text in a Google Doc"""
+
+    if replacements is None:
+        replacements = {}
+
+    replacements = {**get_default_replacements(), **replacements}
+
     requests = []
     
     # Create replace requests for each placeholder
@@ -110,25 +117,9 @@ def replace_text_in_document(docs_service, document_id, replacements):
             body={'requests': requests}
         ).execute()
 
-def main():
-    # Configuration
-    TEMPLATE_DOC_ID = '1rrgQCAJdA6AZWC6jaK3tLCegYb9eC760kaYSZTuRs6s'  # Replace with your template doc ID
-    DESTINATION_FOLDER_ID = '1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ'  # Replace with folder ID (optional)
-    NEW_DOC_NAME = f"Generated Document - {datetime.now().strftime('%Y-%m-%d %H:%M')}"
-    
-    # Define your replacements
-    replacements = {
-        '{Date}': datetime.now().strftime('%B %d, %Y'),
-        '{Time}': datetime.now().strftime('%I:%M %p'),
-        '{Year}': str(datetime.now().year),
-        '{Month}': datetime.now().strftime('%B'),
-        '{Day}': str(datetime.now().day),
-        # Add more replacements as needed
-        '{CompanyName}': 'Your Company Name',
-        '{UserName}': 'John Doe',
-        '{ProjectName}': 'Sample Project'
-    }
-    
+
+def copy_document_and_edit(template_id, new_name, destination_folder_id=None, replacements=None):
+
     try:
         # Authenticate
         print("Authenticating with Google APIs...")
@@ -142,9 +133,9 @@ def main():
         print(f"Copying template document...")
         new_doc_id = copy_document(
             drive_service, 
-            TEMPLATE_DOC_ID, 
-            NEW_DOC_NAME,
-            DESTINATION_FOLDER_ID if DESTINATION_FOLDER_ID != 'your_destination_folder_id_here' else None
+            template_id, 
+            new_name,
+            destination_folder_id
         )
         print(f"Document copied successfully. New document ID: {new_doc_id}")
         
@@ -154,14 +145,11 @@ def main():
         print("Text replacements completed!")
         
         # Get the document URL
-        doc_url = f"https://docs.google.com/document/d/{new_doc_id}"
-        print(f"New document URL: {doc_url}")
+        new_doc_url = f"https://docs.google.com/document/d/{new_doc_id}"
+        print(f"New document URL: {new_doc_url}")
         
-        return new_doc_id, doc_url
+        return new_doc_id, new_doc_url
         
     except Exception as e:
         print(f"An error occurred: {e}")
         return None, None
-
-if __name__ == "__main__":
-    main()
