@@ -9,6 +9,7 @@ import json
 from datetime import datetime
 import os
 import argparse
+from tag_users import get_channel_member_ids, tag_users
 
 # Configuration
 SLACK_BOT_TOKEN = os.getenv('SLACK_BOT_TOKEN')
@@ -29,6 +30,9 @@ def send_slack_message(channel, text, blocks=None, display_name=None, icon=None)
         dict: Slack API response or None on error
     """
     
+    member_ids = get_channel_member_ids(channel)
+    text = tag_users(text, member_ids)
+
     url = "https://slack.com/api/chat.postMessage"
     
     headers = {
@@ -55,6 +59,7 @@ def send_slack_message(channel, text, blocks=None, display_name=None, icon=None)
     
     # Add rich formatting blocks if provided
     if blocks:
+        blocks = tag_users(blocks, member_ids)
         payload["blocks"] = blocks
     
     try:
@@ -118,10 +123,10 @@ def test_comprehensive_message(channel=DEFAULT_CHANNEL):
                     f"*Test sent at:* {timestamp}\n\n"
                     "*Features demonstrated:*\n"
                     "• Custom bot name and icon\n"
-                    "• Rich formatting with *bold*, _italic_, and `code`\n"
+                    "• Rich formatting with *bold*, _italic_, and `code` @hannes.whittingham\n"
                     "• Links: <https://anthropic.com|Anthropic> and <https://slack.com|Slack API>\n"
                     "• Emojis: :rocket: :white_check_mark: :gear:\n"
-                    "• Block formatting with headers and dividers"
+                    "• Block formatting with headers and dividers @Hannes Whittingham Hello <@U08P2P0TT4N>!"
                 )
             }
         },
@@ -141,7 +146,7 @@ def test_comprehensive_message(channel=DEFAULT_CHANNEL):
     
     return send_slack_message(
         channel,
-        f"Comprehensive Slack bot test - {timestamp}",  # Fallback text
+        f"THIS TEXT WAS IN TEXT FIELD - {timestamp}",  # Fallback text
         blocks=blocks,
         display_name="Test Bot Pro",
         icon="robot_face"

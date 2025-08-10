@@ -22,7 +22,7 @@ messages:
         - type: "context"
           elements:
             - type: "mrkdwn"
-              text: "🤖 Automated by RMBot"
+              text: "@Hannes Whittingham Hello!"
 
 # You can add more messages here following the same pattern
 # Supported schedule options:

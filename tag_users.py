@@ -40,7 +40,7 @@ def get_channel_id(channel_name):
     return None
 
 
-def get_channel_members(channel_name):
+def get_channel_member_ids(channel_name):
     headers = {
         'Authorization': f'Bearer {SLACK_BOT_TOKEN}',
         'Content-Type': 'application/json'
@@ -93,8 +93,76 @@ def get_channel_members(channel_name):
     
     return channel_members
 
-# Get members from default channel
-user_ids = get_channel_members(DEFAULT_CHANNEL)
 
-print(user_ids)
+def tag_users_string(text, user_dict):
+    """
+    Replace @username mentions with <@USER_ID> format in a single string.
+    
+    Args:
+        text (str): Input text containing potential @mentions
+        user_dict (dict): Dictionary mapping usernames to user IDs
+    
+    Returns:
+        str: Text with @mentions replaced by <@USER_ID> format
+    """
+    result = ""
+    i = 0
+    
+    while i < len(text):
+        if text[i] == '@':
+            # Find the longest matching username starting from this position
+            longest_match = ""
+            longest_match_length = 0
+            
+            # Check all possible usernames in the dictionary
+            for username in user_dict:
+                # Check if the text after '@' starts with this username
+                if (i + 1 + len(username) <= len(text) and 
+                    text[i + 1:i + 1 + len(username)] == username):
+                    # If this match is longer than the current longest, use it
+                    if len(username) > longest_match_length:
+                        longest_match = username
+                        longest_match_length = len(username)
+            
+            if longest_match:
+                # Replace @username with <@USER_ID>
+                result += f"<@{user_dict[longest_match]}>"
+                i += 1 + longest_match_length  # Skip past the '@' and username
+            else:
+                # No match found, keep the '@' as is
+                result += text[i]
+                i += 1
+        else:
+            result += text[i]
+            i += 1
+    
+    return result
+
+
+def tag_users(data, user_dict):
+    """
+    Replace @username mentions with <@USER_ID> format in nested data structures.
+    
+    Recursively processes dictionaries, lists, and strings to find and replace
+    @mentions anywhere in the data structure.
+    
+    Args:
+        data: Input data - can be string, dict, list, or any nested combination
+        user_dict (dict): Dictionary mapping usernames to user IDs
+    
+    Returns:
+        Same type as input with @mentions replaced by <@USER_ID> format
+    """
+    if isinstance(data, str):
+        # Base case: if it's a string, apply the string tagging function
+        return tag_users_string(data, user_dict)
+    elif isinstance(data, dict):
+        # Recursively process each value in the dictionary
+        return {key: tag_users(value, user_dict) for key, value in data.items()}
+    elif isinstance(data, list):
+        # Recursively process each element in the list
+        return [tag_users(item, user_dict) for item in data]
+    else:
+        # For any other data type (int, bool, None, etc.), return as is
+        return data
 
