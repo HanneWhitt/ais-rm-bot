@@ -11,6 +11,7 @@ SCOPES = [
     'https://www.googleapis.com/auth/documents'
 ]
 
+
 def authenticate():
     """Authenticate with Google APIs - handles both local and headless environments"""
     creds = None
@@ -33,13 +34,11 @@ def authenticate():
                 creds = None
         
         if not creds:
-            # Try headless flow first
+            # Try headless flow for desktop app credentials
             try:
                 flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
                 
-                # For headless environments, use manual flow
-                flow.redirect_uri = 'urn:ietf:wg:oauth:2.0:oob'  # Out-of-band flow
-                
+                # Get authorization URL (no redirect_uri needed for desktop apps)
                 auth_url, _ = flow.authorization_url(prompt='consent')
                 
                 print("\n" + "="*60)
@@ -57,18 +56,18 @@ def authenticate():
                 flow.fetch_token(code=code)
                 creds = flow.credentials
                 
+                print("Authentication successful!")
+                
             except Exception as e:
                 print(f"Manual authentication failed: {e}")
-                print("Falling back to local server method...")
-                # Fallback to original method (will fail on headless but good for local development)
-                flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
-                creds = flow.run_local_server(port=0)
+                return None
         
         # Save credentials for next run
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
     
     return creds
+    
 
 def copy_document(drive_service, template_id, new_name, destination_folder_id=None):
     """Copy a Google Doc to a new location"""
