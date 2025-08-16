@@ -1,13 +1,13 @@
 messages:
-  - id: weekly_cot_health_agenda
+  - id: RE_team_weekly_agenda_{date}_{time}
     enabled: true
     schedule:
-      type: recurring
-      time: "17:25"
-      timezone: "UTC"  # Consider adding timezone
-      day: "Sunday"
-      frequency: weekly
-      end_date: "2025-10-01"
+      time: "19:36"             # 24-hour format
+      frequency: "weekly"    # daily, weekly, monthly, once
+      interval: 1               # every N days/weeks/months
+      end_conditions:
+        end_date: "2025-09-01"        # stop after this date
+      days_of_week: ["saturday"]
     channel:
       app: slack
       workspace: Meridian
@@ -18,14 +18,150 @@ messages:
       display_name: null
       icon: null
     google_doc:
-      template_id: 1yET-KNf8X5gqp4qSsSHxNdipa49mlAc5xzoxVJu_Aho
-      new_name: "{date_tomorrow_storage} | [MARS] CoT Health Metrics Check-in"
+      template_id: 148jbVaEV_9qvF2uR89AklPhAdKvcvak9lnH3ywK_zJk
+      new_name: "{date_tomorrow_storage} | [MARS] RE Team Meeting"
       destination_folder_id: 1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ
-    replacements:
-      meeting_name: "{date_tomorrow} | [MARS] CoT Health Metrics Check-in"
-      attendees_commas: "David, Linh, Ida, Manqing, Edward, Cam, Puria, Hannes"
-
-
+      
+  # - id: weekly_cot_health_agenda
+  #   enabled: true
+  #   schedule:
+  #     type: recurring
+  #     time: "17:25"
+  #     timezone: "UTC"  # Consider adding timezone
+  #     day: "Sunday"
+  #     frequency: weekly
+  #     end_date: "2025-10-01"
+  #   channel:
+  #     app: slack
+  #     workspace: Meridian
+  #     channel: "#hannes-dev-channel"
+  #   content:
+  #     text: "Hey! Here's an agenda @Hannes Whittingham {date} {date_tomorrow} {google_doc}"
+  #     blocks: null
+  #     display_name: null
+  #     icon: null
+  #   google_doc:
+  #     template_id: 1yET-KNf8X5gqp4qSsSHxNdipa49mlAc5xzoxVJu_Aho
+  #     new_name: "{date_tomorrow_storage} | [MARS] CoT Health Metrics Check-in"
+  #     destination_folder_id: 1EF6wlQaAwqFHBREtUjs5mbT_u4Li6D2W #1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ
+  #   replacements:
+  #     meeting_name: "{date_tomorrow} | [MARS] CoT Health Metrics Check-in"
+  #     attendees:
+  #       - David
+  #       - Linh
+  #       - Ida
+  #       - Manqing
+  #       - Edward
+  #       - Puria
+  #       - Cam
+  #       - Hannes
+  #     mentees:
+  #       - David
+  #       - Linh
+  #       - Ida
+  #       - Manqing
+  # - id: weekly_self_recognition_agenda
+  #   enabled: true
+  #   schedule:
+  #     type: recurring
+  #     time: "17:25"
+  #     timezone: "UTC"  # Consider adding timezone
+  #     day: "Sunday"
+  #     frequency: weekly
+  #     end_date: "2025-10-01"
+  #   channel:
+  #     app: slack
+  #     workspace: Meridian
+  #     channel: "#hannes-dev-channel"
+  #   content:
+  #     text: "Hey! Here's an agenda @Hannes Whittingham {date} {date_tomorrow} {google_doc}"
+  #     blocks: null
+  #     display_name: null
+  #     icon: null
+  #   google_doc:
+  #     template_id: 1yET-KNf8X5gqp4qSsSHxNdipa49mlAc5xzoxVJu_Aho
+  #     new_name: "{date_storage} | [MARS] CoT Health Metrics Check-in"
+  #     destination_folder_id: 11SlN2jBe2G4-gpS4McEXamDk49m4xzdm #1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ
+  #   replacements:
+  #     meeting_name: "{date} | [MARS] Self-Recognition Check-in"
+  #     attendees:
+  #       - Sohaib
+  #       - Jesse
+  #       - Edward
+  #       - Puria
+  #       - Cam
+  #       - Lenny
+  #     mentees:
+  #       - Sohaib
+  #       - Jesse
+  # - id: weekly_cot_injection_agenda
+  #   enabled: true
+  #   schedule:
+  #     type: recurring
+  #     time: "17:25"
+  #     timezone: "UTC"  # Consider adding timezone
+  #     day: "Sunday"
+  #     frequency: weekly
+  #     end_date: "2025-10-01"
+  #   channel:
+  #     app: slack
+  #     workspace: Meridian
+  #     channel: "#hannes-dev-channel"
+  #   content:
+  #     text: "Hey! Here's an agenda @Hannes Whittingham {date} {date_tomorrow} {google_doc}"
+  #     blocks: null
+  #     display_name: null
+  #     icon: null
+  #   google_doc:
+  #     template_id: 1yET-KNf8X5gqp4qSsSHxNdipa49mlAc5xzoxVJu_Aho
+  #     new_name: "{date_storage} | [MARS] CoT Health Metrics Check-in"
+  #     destination_folder_id: 1QSbMbo0zOobAA7S3s1xzX5WiCSvgba8w #1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ
+  #   replacements:
+  #     meeting_name: "{date} | [MARS] CoT Injection Check-in"
+  #     attendees:
+  #       - Ananya
+  #       - Lindsay
+  #       - Edward
+  #       - Puria
+  #       - Cam
+  #     mentees:
+  #       - Ananya
+  #       - Lindsay
+  # - id: honest_persona_team_agenda
+  #   enabled: true
+  #   schedule:
+  #     type: recurring
+  #     time: "17:25"
+  #     timezone: "UTC"  # Consider adding timezone
+  #     day: "Sunday"
+  #     frequency: weekly
+  #     end_date: "2025-10-01"
+  #   channel:
+  #     app: slack
+  #     workspace: Meridian
+  #     channel: "#hannes-dev-channel"
+  #   content:
+  #     text: "Honest persona agenda {google_doc}"
+  #     blocks: null
+  #     display_name: null
+  #     icon: null
+  #   google_doc:
+  #     template_id: 1yET-KNf8X5gqp4qSsSHxNdipa49mlAc5xzoxVJu_Aho
+  #     new_name: "{date_tomorrow_storage} | [MARS] Honest Persona Team Check-in"
+  #     destination_folder_id: 17HwLxSS7Echw-5KOxn0OIxDePzt50TcI #1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ
+  #   replacements:
+  #     meeting_name: "{date_tomorrow} | [MARS] Honest Persona Team Check-in"
+  #     attendees:
+  #       - Will
+  #       - Steven
+  #       - Anton
+  #       - Florian
+  #       - Robert
+  #     mentees:
+  #       - Will
+  #       - Steven
+  #       - Anton
+  #       - Florian
   # - id: project_status_update
   #   enabled: true
   #   channel:

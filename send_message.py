@@ -4,9 +4,9 @@ from replacements import replace_recursive
 
 
 def send_message(
-    id,
     channel,
     content,
+    id='No_ID',
     replacements=None,
     google_doc=None
 ):
@@ -14,6 +14,10 @@ def send_message(
 
     if replacements is None:
         replacements = {}
+
+    # Ensure all replacement keys have curly brackets
+    replacements = {'{' + k.strip('{').strip('}') + '}':v for k, v in replacements.items()}
+    replacements = replace_recursive(replacements)
 
     if google_doc is not None:
         google_doc = replace_recursive(google_doc, replacements)
@@ -43,10 +47,12 @@ if __name__ == '__main__':
     with open('config.yaml', 'r') as file:
         messages = yaml.safe_load(file)['messages']
 
-    test_message = messages[0]
+    test_messages = [messages[0]]
 
-    schedule = test_message.pop('schedule')
-    enabled = test_message.pop('enabled')
+    for test_message in test_messages:
 
-    if enabled:
-        send_message(**test_message)
+        schedule = test_message.pop('schedule')
+        enabled = test_message.pop('enabled')
+
+        if enabled:
+            send_message(**test_message)

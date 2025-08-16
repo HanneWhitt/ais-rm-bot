@@ -39,13 +39,13 @@ def replace_recursive_(data, replacements=None):
         return replace_string(data, replacements)
     elif isinstance(data, dict):
         # Recursive case: if it's a dict, apply to all values
-        return {key: replace_recursive(value, replacements) for key, value in data.items()}
+        return {key: replace_recursive_(value, replacements) for key, value in data.items()}
     elif isinstance(data, list):
         # Recursive case: if it's a list, apply to all elements
-        return [replace_recursive(item, replacements) for item in data]
+        return [replace_recursive_(item, replacements) for item in data]
     elif isinstance(data, tuple):
         # Recursive case: if it's a tuple, apply to all elements and return tuple
-        return tuple(replace_recursive(item, replacements) for item in data)
+        return tuple(replace_recursive_(item, replacements) for item in data)
     else:
         # Base case: if it's any other type, return as-is
         return data
@@ -58,5 +58,8 @@ def replace_recursive(data, replacements=None):
         
     # Combine replacements with default replacements
     replacements = {**get_default_replacements(), **replacements}
+
+    # Ensure all replacement keys have curly brackets
+    replacements = {'{' + k.strip('{').strip('}') + '}':v for k, v in replacements.items()}
 
     return replace_recursive_(data, replacements)
