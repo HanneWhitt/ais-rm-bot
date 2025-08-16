@@ -1,13 +1,10 @@
 import os
 import requests
 
-# Configuration
-SLACK_BOT_TOKEN = os.getenv('SLACK_BOT_TOKEN')
-DEFAULT_CHANNEL = "#research-accelerator-week-august-25"
 
-def get_channel_id(channel_name):
+def get_channel_id(channel_name, slack_bot_token):
     headers = {
-        'Authorization': f'Bearer {SLACK_BOT_TOKEN}',
+        'Authorization': f'Bearer {slack_bot_token}',
         'Content-Type': 'application/json'
     }
     
@@ -40,13 +37,13 @@ def get_channel_id(channel_name):
     return None
 
 
-def get_channel_member_ids(channel_name):
+def get_channel_member_ids(channel_name, slack_bot_token):
     headers = {
-        'Authorization': f'Bearer {SLACK_BOT_TOKEN}',
+        'Authorization': f'Bearer {slack_bot_token}',
         'Content-Type': 'application/json'
     }
     
-    channel_id = get_channel_id(channel_name)
+    channel_id = get_channel_id(channel_name, slack_bot_token)
     
     if not channel_id:
         print(f"Channel '{channel_name}' not found or bot is not a member")

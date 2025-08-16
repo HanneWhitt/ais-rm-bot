@@ -52,7 +52,8 @@ def send_slack_message(workspace, channel, text, blocks=None, display_name=None,
     
     slack_bot_token = get_slack_token(workspace)
 
-    member_ids = get_channel_member_ids(channel)
+    member_ids = get_channel_member_ids(channel, slack_bot_token)
+
     text = tag_users(text, member_ids)
 
     url = "https://slack.com/api/chat.postMessage"

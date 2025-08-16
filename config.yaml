@@ -10,17 +10,17 @@ messages:
       days_of_week: ["saturday"]
     channel:
       app: slack
-      workspace: Meridian
-      channel: "#hannes-dev-channel"
+      workspace: Geodesic
+      channel: "#test-channel"
     content:
       text: "Hey! Here's an agenda @Hannes Whittingham {date} {date_tomorrow} {google_doc}"
       blocks: null
       display_name: null
       icon: null
-    google_doc:
-      template_id: 148jbVaEV_9qvF2uR89AklPhAdKvcvak9lnH3ywK_zJk
-      new_name: "{date_tomorrow_storage} | [MARS] RE Team Meeting"
-      destination_folder_id: 1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ
+    # google_doc:
+    #   template_id: 148jbVaEV_9qvF2uR89AklPhAdKvcvak9lnH3ywK_zJk
+    #   new_name: "{date_tomorrow_storage} | [MARS] RE Team Meeting"
+    #   destination_folder_id: 1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ
       
   # - id: weekly_cot_health_agenda
   #   enabled: true
