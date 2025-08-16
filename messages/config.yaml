@@ -1,26 +1,53 @@
 messages:
-  - id: RE_team_weekly_agenda_{date}_{time}
+  - id: RE_team_weekly_agenda
     enabled: true
     schedule:
-      time: "19:36"             # 24-hour format
+      time: "10:00"             # 24-hour format
       frequency: "weekly"    # daily, weekly, monthly, once
       interval: 1               # every N days/weeks/months
       end_conditions:
-        end_date: "2025-09-01"        # stop after this date
-      days_of_week: ["saturday"]
+        end_date: "2025-10-15"        # stop after this date
+      days_of_week: ["sunday"]
     channel:
       app: slack
-      workspace: Geodesic
-      channel: "#test-channel"
+      workspace: meridian
+      channel: "#hannes-dev-channel"
     content:
-      text: "Hey! Here's an agenda @Hannes Whittingham {date} {date_tomorrow} {google_doc}"
-      blocks: null
-      display_name: null
-      icon: null
-    # google_doc:
-    #   template_id: 148jbVaEV_9qvF2uR89AklPhAdKvcvak9lnH3ywK_zJk
-    #   new_name: "{date_tomorrow_storage} | [MARS] RE Team Meeting"
-    #   destination_folder_id: 1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ
+      text: "New team meeting agenda - Representation Engineering team @Marysia Winkels @gracjan-goral @Steven Basart"
+      blocks:
+        - type: "header"
+          text:
+            type: "plain_text"
+            text: "📝 Weekly team meeting agenda"
+        - type: "section"
+          text:
+            type: "mrkdwn"
+            text: "*Priority Items for This Week:*\n• Review sprint goals\n• Update project timeline\n• Schedule team sync\n\n*Blockers:* None currently\n\n*Next Milestone:* Feature freeze on `2025-08-20`"
+        - type: "section"
+          text:
+            type: "mrkdwn"
+            text: "Hey @Hannes Whittingham - please review the updated roadmap in the shared drive."
+          accessory:
+            type: "button"
+            text:
+              type: "plain_text"
+              text: "View Roadmap"
+            url: "{google_doc}"
+        - type: "divider"
+        - type: "context"
+          elements:
+            - type: "mrkdwn"
+              text: "Last updated: <!date^1691650800^{date_short} at {time}|August 10, 2025>"
+    google_doc:
+      template_id: 148jbVaEV_9qvF2uR89AklPhAdKvcvak9lnH3ywK_zJk
+      new_name: "{date_tomorrow_storage} | [MARS] RE Team Meeting"
+      destination_folder_id: 1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ
+      permissions: 
+        marysia.winkels@gmail.com: writer
+        gp.goral@uw.edu.pl: writer
+        xksteven@gmail.com: writer
+        steven@safe.ai: writer
+        
       
   # - id: weekly_cot_health_agenda
   #   enabled: true

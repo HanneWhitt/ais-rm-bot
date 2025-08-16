@@ -70,7 +70,7 @@ def authenticate():
     return creds
     
 
-def copy_document(drive_service, template_id, new_name, destination_folder_id=None):
+def copy_document(drive_service, template_id, new_name, destination_folder_id=None, permissions=None):
     """Copy a Google Doc to a new location"""
     copy_metadata = {
         'name': new_name
@@ -118,7 +118,83 @@ def replace_text_in_document(docs_service, document_id, replacements=None):
         ).execute()
 
 
-def copy_document_and_edit(template_id, new_name, destination_folder_id=None, replacements=None):
+
+# sharing permissions
+def add_sharing_permissions(
+    drive_service,
+    doc_id,
+    permissions, 
+    send_notification=False,
+    transfer_ownership=False
+):
+    """
+    Add sharing permissions with detailed error handling and ownership transfer option.
+    
+    Args:
+        drive_service: Authenticated Google Drive API service object
+        doc_id (str): The ID of the Google Doc to share
+        permissions (dict): Dictionary mapping email addresses to roles
+        send_notification (bool): Whether to send email notifications
+        transfer_ownership (bool): Required when setting role to 'owner'
+    
+    Returns:
+        dict: Results with 'success' and 'failed' lists containing email addresses
+    """
+    
+    results = {
+        'success': [],
+        'failed': []
+    }
+    
+    for email, role in permissions.items():
+        try:
+            permission = {
+                'type': 'user',
+                'role': role,
+                'emailAddress': email
+            }
+            
+            # Build the request
+            request_params = {
+                'fileId': doc_id,
+                'body': permission,
+                'sendNotificationEmail': send_notification
+            }
+            
+            # Add transferOwnership parameter if needed
+            if role == 'owner':
+                request_params['transferOwnership'] = transfer_ownership
+            
+            # Execute the request
+            result = drive_service.permissions().create(**request_params).execute()
+            
+            results['success'].append({
+                'email': email,
+                'role': role,
+                'permission_id': result.get('id')
+            })
+
+            print(f"Successfully gave {role} access to {email}")
+            
+        except Exception as e:
+            results['failed'].append({
+                'email': email,
+                'role': role,
+                'error': str(e)
+            })
+    
+    return results
+
+
+def copy_document_and_edit(
+    template_id,
+    new_name,
+    destination_folder_id=None,
+    replacements=None,
+    permissions=None,
+    send_notification=False,
+    transfer_ownership=False
+):
 
     try:
         # Authenticate
@@ -144,6 +220,17 @@ def copy_document_and_edit(template_id, new_name, destination_folder_id=None, re
         replace_text_in_document(docs_service, new_doc_id, replacements)
         print("Text replacements completed!")
         
+        if permissions:
+            # Update permissions
+            print("Permissions:")
+            add_sharing_permissions(
+                drive_service,
+                new_doc_id,
+                permissions,
+                send_notification,
+                transfer_ownership
+            )
+
         # Get the document URL
         new_doc_url = f"https://docs.google.com/document/d/{new_doc_id}"
         print(f"New document URL: {new_doc_url}")
@@ -153,3 +240,17 @@ def copy_document_and_edit(template_id, new_name, destination_folder_id=None, re
     except Exception as e:
         print(f"An error occurred: {e}")
         return None, None
+
+
+
+if __name__ == '__main__':
+
+    import yaml
+
+    # Load messages
+    with open('messages/config.yaml', 'r') as file:
+        messages = yaml.safe_load(file)['messages']
+
+    gdocs = messages[0]['google_doc']
+
+    copy_document_and_edit(**gdocs)
