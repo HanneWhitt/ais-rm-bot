@@ -44,15 +44,17 @@ if __name__ == '__main__':
     import yaml
 
     # Load messages
-    with open('config.yaml', 'r') as file:
+    with open('messages/RE_team.yaml', 'r') as file:
         messages = yaml.safe_load(file)['messages']
 
     test_messages = [messages[0]]
 
     for test_message in test_messages:
 
-        schedule = test_message.pop('schedule')
-        enabled = test_message.pop('enabled')
+        test_message['channel']['workspace'] = 'meridian'
+        test_message['channel']['channel'] = 'hannes-dev-channel'
 
-        if enabled:
-            send_message(**test_message)
+        test_message.pop('schedule')
+        test_message.pop('enabled')
+
+        send_message(**test_message)

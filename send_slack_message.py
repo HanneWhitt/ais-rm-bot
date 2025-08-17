@@ -11,28 +11,7 @@ import os
 import argparse
 from tag_users import get_channel_member_ids, tag_users
 import yaml
-
-
-# Load slack tokens from file
-with open('slack_tokens.yaml', 'r') as file:
-    tokens = yaml.safe_load(file)
-
-
-def get_slack_token(workspace):
-    """Load slack bot token, verify that the Slack bot token is properly configured"""
-    
-    slack_bot_token = tokens.get(workspace.lower())
-
-    if not slack_bot_token:
-        print(f"❌ No token for workspace {workspace} in slack_tokens.yaml")
-        return None
-
-    if not slack_bot_token.startswith('xoxb-'):
-        print("❌ Token should start with 'xoxb-' (bot token)")
-        return None
-    
-    print(f"✅ Token format looks correct: {slack_bot_token[:10]}...")
-    return slack_bot_token
+from utils import get_slack_token
 
 
 def send_slack_message(workspace, channel, text, blocks=None, display_name=None, icon=None):
@@ -110,3 +89,22 @@ def send_slack_message(workspace, channel, text, blocks=None, display_name=None,
     except Exception as e:
         print(f"❌ Exception occurred: {e}")
         return None
+
+
+if __name__ == '__main__':
+
+    import yaml
+
+    # Load messages
+    with open('messages/RE_team.yaml', 'r') as file:
+        messages = yaml.safe_load(file)['messages']
+
+    test_messages = [messages[0]]
+
+    for test_message in test_messages:
+
+        send_slack_message(
+            'meridian',
+            '#hannes-dev-channel',
+            **test_message['content']
+        )

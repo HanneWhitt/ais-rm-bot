@@ -6,11 +6,13 @@ Loads YAML files containing message schedules and manages them with APScheduler.
 Validates schedule configurations and prevents redundant key usage.
 """
 
+from ntpath import isdir
 import yaml
 import logging
 from datetime import datetime, date, timedelta
 from typing import Dict, List, Any, Optional
 from pathlib import Path
+import os
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.date import DateTrigger
@@ -326,22 +328,6 @@ class MessageScheduler:
                 trigger_kwargs['end_date'] = end_params['end_date']
             
             return CronTrigger(**trigger_kwargs)
-    
-    # def send_message_(self, message_data: Dict[str, Any]):
-    #     """
-    #     Placeholder function to send a message.
-    #     Replace this with your actual message sending logic.
-        
-    #     Args:
-    #         message_data: Complete message data including content and schedule
-    #     """
-    #     id = message_data.get('id', 'No_ID')
-
-    #     logger.info(f"Sending message: {id}")
-        
-    #     send_message(**message_data)
-        
-    #     print(f"📧 Message sent: {id}")
 
     
     def schedule_messages_from_yaml(self, yaml_path: str):
@@ -354,9 +340,18 @@ class MessageScheduler:
         # Clear existing jobs
         self.clear_all_jobs()
         
-        # Load and validate YAML
-        data = self.load_yaml_file(yaml_path)
-        messages = data.get('messages', [])
+
+        if os.path.isdir(yaml_path):
+            messages = []
+            for file in os.listdir(yaml_path):
+                if file.endswith('.yaml') or file.endswith('.yml'):
+                    data = self.load_yaml_file(os.path.join(yaml_path, file))
+                    messages = messages + data.get('messages', [])
+            
+        else:
+            # Load and validate YAML
+            data = self.load_yaml_file(yaml_path)
+            messages = data.get('messages', [])
         
         if not messages:
             logger.warning("No messages found in YAML file")
@@ -418,7 +413,7 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(description='Schedule messages from YAML file')
-    parser.add_argument('yaml_file', help='Path to YAML file containing messages')
+    parser.add_argument('--yaml_file', help='Path to YAML file containing messages, or folder of such files', default='messages/')
     parser.add_argument('--db-url', default='sqlite:///scheduler.db', 
                        help='Database URL for job persistence')
     parser.add_argument('--list-jobs', action='store_true',

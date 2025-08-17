@@ -163,3 +163,17 @@ def tag_users(data, user_dict):
         # For any other data type (int, bool, None, etc.), return as is
         return data
 
+
+if __name__ == '__main__':
+
+
+    from utils import get_slack_token
+
+    workspace = 'geodesic'
+    channel = 'sr-jscl'
+
+    slack_token = get_slack_token(workspace)
+
+    member_ids = get_channel_member_ids(channel, slack_token)
+
+    print(member_ids)
