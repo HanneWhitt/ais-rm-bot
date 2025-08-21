@@ -169,8 +169,8 @@ if __name__ == '__main__':
 
     from utils import get_slack_token
 
-    workspace = 'geodesic'
-    channel = 'sr-jscl'
+    workspace = 'cais_cluster'
+    channel = 'mars-representation-engineering'
 
     slack_token = get_slack_token(workspace)
 

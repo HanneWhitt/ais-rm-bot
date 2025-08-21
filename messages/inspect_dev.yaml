@@ -1,0 +1,51 @@
+messages:
+  - id: inspect_dev_team_weekly_agenda
+    enabled: true
+    schedule:
+      time: "15:00"             # 24-hour format
+      frequency: "weekly"    # daily, weekly, monthly, once
+      interval: 1               # every N days/weeks/months
+      end_conditions:
+        end_date: "2025-10-15"        # stop after this date
+      days_of_week: ["tuesday"]
+    channel:
+      app: slack
+      workspace: mars
+      channel: "#justin-3-inspect-dev"
+    content:
+      text: "<{google_doc}|New team meeting agenda> - Inspect dev team @Qi Guo @Matan Shtepel @Daniel Polatajko @Justin Olive"
+      blocks:
+        - type: "header"
+          text:
+            type: "plain_text"
+            text: "📝 Inspect dev team meeting agenda"
+        - type: "divider"
+        - type: "section"
+          text:
+            type: "mrkdwn"
+            text: |
+              Hey team! <{google_doc}|Here's an agenda> for your weekly meeting tomorrow.
+
+              *Everyone*: please add any general items you would like to discuss. 
+
+              @Qi Guo @Matan Shtepel @Daniel Polatajko - please also:
+              • Drop in any results, figures, or printscreens you'd like to share at the bottom
+              • Optionally, take a couple of minutes to fill in the check-in at the top.
+
+              During your discussion, make sure to *settle on some action items* for each team member and *record them in the doc*.
+
+              Have a fabulous meeting!
+        - type: "divider"
+        - type: "context"
+          elements:
+            - type: "mrkdwn"
+              text: "Disclaimer: RMbot is experimental and may create slack/google doc-related chaos. You're welcome."
+    google_doc:
+      template_id: 1bhJ7yOfMdRe_ezOdB6_fX3NJ1MqbThxuCAYJgjHEuAs
+      new_name: "{date_tomorrow_storage} | [MARS] Inspect Dev Team Meeting"
+      destination_folder_id: 1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ
+      permissions: 
+        danielpolatajko@gmail.com: writer
+        matan.shtepel@gmail.com: writer
+        special0831qi@gmail.com: writer
+        justin@arcadiaimpact.org: writer

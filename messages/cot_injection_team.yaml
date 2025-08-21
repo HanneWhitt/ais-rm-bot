@@ -1,0 +1,61 @@
+messages:
+  - id: Cot_injection_team_weekly_agenda
+    enabled: true
+    schedule:
+      time: "17:00"             # 24-hour format
+      frequency: "weekly"    # daily, weekly, monthly, once
+      interval: 1               # every N days/weeks/months
+      end_conditions:
+        end_date: "2025-10-15"        # stop after this date
+      days_of_week: ["wednesday"]
+    channel:
+      app: slack
+      workspace: geodesic
+      channel: "#self-consistency"
+    content:
+      text: "New team meeting agenda - CoT Injection team @Lindsay Smith @Ananya Malik @ey245 @puria @Cam Tice"
+      blocks:
+        - type: "header"
+          text:
+            type: "plain_text"
+            text: "📝 CoT Injection team meeting agenda"
+        - type: "divider"
+        - type: "section"
+          text:
+            type: "mrkdwn"
+            text: |
+              Hey CoT Injection team! <{google_doc}|Here's an agenda doc> for your weekly meeting tomorrow.
+
+              *Everyone*: please add any general items you would like to discuss!
+
+              @Lindsay Smith @Ananya Malik - please also:
+              • Drop in any results, figures, or printscreens you'd like to share at the bottom
+              • Optionally, take a couple of minutes to fill in the check-in at the top.
+
+              During your discussion, make sure to *settle on some action points* for each team member and *record them in the doc*.
+
+              Have a fabulous meeting!
+        - type: "divider"
+        - type: "context"
+          elements:
+            - type: "mrkdwn"
+              text: "Disclaimer: RMbot is experimental and may create slack/google doc-related chaos. You're welcome."
+    google_doc:
+      template_id: 1q6R0z-8s3Vm0B1MbeObDmMvcC8WrrN_Mh00IF-NxypI
+      new_name: "{date_tomorrow_storage} | [MARS] Self-recognition Team Meeting"
+      destination_folder_id: 1QSbMbo0zOobAA7S3s1xzX5WiCSvgba8w
+  - id: CoT_injection_team_1_to_1_reminder
+    enabled: true
+    schedule:
+      time: "16:30"             # 24-hour format
+      frequency: "weekly"    # daily, weekly, monthly, once
+      interval: 1               # every N days/weeks/months
+      end_conditions:
+        end_date: "2025-10-15"        # stop after this date
+      days_of_week: ["Sunday"]
+    channel:
+      app: slack
+      workspace: geodesic
+      channel: "#self-consistency"
+    content:
+      text: "Hey @Lindsay Smith @Ananya Malik - just a quick reminder to take 5 minutes to fill in this week's RM form before our meeting. See you tomorrow!"
