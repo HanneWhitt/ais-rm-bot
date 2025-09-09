@@ -52,7 +52,7 @@ messages:
       interval: 1               # every N days/weeks/months
       end_conditions:
         end_date: "2025-10-15"        # stop after this date
-      days_of_week: ["tuesday"]
+      days_of_week: ["monday"]
     channel:
       app: slack
       workspace: mars

@@ -20,7 +20,6 @@ from apscheduler.triggers.cron import CronTrigger
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor
 
-from replacements import replace_recursive
 from send_message import send_message
 
 

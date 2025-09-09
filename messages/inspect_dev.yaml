@@ -49,3 +49,27 @@ messages:
         matan.shtepel@gmail.com: writer
         special0831qi@gmail.com: writer
         justin@arcadiaimpact.org: writer
+  - id: inspect_dev_team_standup
+    enabled: true
+    schedule:
+      time: "13:30"             # 24-hour format
+      frequency: "weekly"    # daily, weekly, monthly, once
+      interval: 1               # every N days/weeks/months
+      end_conditions:
+        end_date: "2025-10-15"        # stop after this date
+      days_of_week: ["monday"]
+    channel:
+      app: slack
+      workspace: mars
+      channel: "#justin-3-inspect-dev"
+    content:
+      text: "Hello @Qi Guo @Matan Shtepel @Daniel Polatajko - <{google_doc}|Here's a doc> we can use for standup. See you in 30!"
+    google_doc:
+      template_id: 1JUY7jliAHICNVKmS2wXp5XQ9OjA-ovEUln0zksj9SA4
+      new_name: "{date_storage} | [MARS] Inspect Dev Standup"
+      destination_folder_id: 1P6aEnsW76y4IFiU181hz8g33Bj9zQGJJ
+      permissions: 
+        danielpolatajko@gmail.com: writer
+        matan.shtepel@gmail.com: writer
+        special0831qi@gmail.com: writer
+        justin@arcadiaimpact.org: writer

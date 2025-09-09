@@ -1,12 +1,13 @@
 from datetime import datetime, timedelta
 from utils import format_date_with_ordinal, get_ordinal_suffix
 
-# Get today and tomorrow
-today = datetime.now()
-tomorrow = today + timedelta(days=1)
-
 
 def get_default_replacements():
+
+    # Get today and tomorrow
+    today = datetime.now()
+    tomorrow = today + timedelta(days=1)
+
     return {
         '{time}': today.strftime('%I:%M %p'),
         '{year}': str(today.year),

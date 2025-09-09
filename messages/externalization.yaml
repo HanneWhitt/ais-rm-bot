@@ -104,6 +104,7 @@ messages:
     enabled: true
     schedule:
       time: "17:00"             # 24-hour format
+      start_date: "2025-09-05"
       frequency: "weekly"    # daily, weekly, monthly, once
       interval: 1               # every N days/weeks/months
       end_conditions:
