@@ -20,6 +20,38 @@ def get_default_replacements():
     }
 
 
+def get_event_replacements(event_time):
+    """
+    Get replacements based on a calendar event time instead of current time.
+
+    This is used for calendar-anchored messages so that {date}, {time}, etc.
+    refer to the event's date/time, not when the message is sent.
+
+    Args:
+        event_time (datetime): The calendar event start time
+
+    Returns:
+        dict: Replacement dictionary with same keys as get_default_replacements()
+    """
+    # Handle both timezone-aware and naive datetimes
+    if event_time.tzinfo is not None:
+        # Convert to local timezone for display
+        event_time = event_time.replace(tzinfo=None)
+
+    tomorrow = event_time + timedelta(days=1)
+
+    return {
+        '{time}': event_time.strftime('%I:%M %p'),
+        '{year}': str(event_time.year),
+        '{month}': event_time.strftime('%B'),
+        '{day}': str(event_time.day),
+        '{date}': format_date_with_ordinal(event_time),
+        '{date_storage}': event_time.strftime('%Y %m %d'),
+        '{date_tomorrow}': format_date_with_ordinal(tomorrow),
+        '{date_tomorrow_storage}': tomorrow.strftime('%Y %m %d')
+    }
+
+
 def replace_string(string, replacements=None):
     """Replace placeholders in a string with values from replacements dict"""
     if replacements is None:

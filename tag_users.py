@@ -170,7 +170,7 @@ if __name__ == '__main__':
     from utils import get_slack_token
 
     workspace = 'meridian'
-    channel = 'extended-meridian-team'
+    channel = 'hannes-adeline-rm'
 
     slack_token = get_slack_token(workspace)
 
