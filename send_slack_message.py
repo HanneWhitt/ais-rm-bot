@@ -96,7 +96,7 @@ if __name__ == '__main__':
     import yaml
 
     # Load messages
-    with open('messages/RE_team.yaml', 'r') as file:
+    with open('old_messages/RE_team.yaml', 'r') as file:
         messages = yaml.safe_load(file)['messages']
 
     test_messages = [messages[0]]

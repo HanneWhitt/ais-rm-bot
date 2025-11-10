@@ -2,3 +2,6 @@ token.json
 credentials.json
 slack_tokens.yaml
 __pycache__/*
+messages/
+old_messages/
+lists/

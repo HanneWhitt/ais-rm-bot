@@ -248,9 +248,58 @@ if __name__ == '__main__':
     import yaml
 
     # Load messages
-    with open('messages/config.yaml', 'r') as file:
-        messages = yaml.safe_load(file)['messages']
+    # with open('messages/meridian_weekly_team_meet.yaml', 'r') as file:
+    #     messages = yaml.safe_load(file)['messages']
 
-    gdocs = messages[0]['google_doc']
+    # gdocs = messages[0]['google_doc']
 
-    copy_document_and_edit(**gdocs)
+    gdocs = {
+        'template_id': '1_bHbSxHl84A3XL0IZUSMAP4DkrRSHphWV8wFuVsTvQE',
+        'destination_folder_id': '13xLksjyC5aeye09mZEfEt_ihWSPRxC-P'
+    }
+
+    new = [
+        {'new_name': 'VRP Research Plan and Theory of Change Document - Alignment Faking Team',
+            'replacements': {
+                    '{author_name}': 'JP Rivera, Axel Ahlqvist, Adeline Kassler'
+            },
+        },
+        {'new_name': 'VRP Research Plan and Theory of Change Document - CoT Faithfulness Team',
+        'replacements': {
+                '{author_name}': 'Julian Schultz, Andi Bhongade'
+            }
+        },
+        {'new_name': 'VRP Research Plan and Theory of Change Document - Sleeper Agents Team',
+        'replacements': {
+                '{author_name}': 'Dan Wilhelm, Mo Baker'
+            }
+        },
+        {'new_name': 'VRP Research Plan and Theory of Change Document - Igor Ivanov',
+        'replacements': {
+                '{author_name}': 'Igor Ivanov'
+            }
+        },
+        {'new_name': 'VRP Research Plan and Theory of Change Document - Artyom Karpov',
+        'replacements': {
+                '{author_name}': 'Artyom Karpov'
+            }
+        },
+        {'new_name': 'VRP Research Plan and Theory of Change Document - Bart Bussman',
+        'replacements': {
+                '{author_name}': 'Bart Bussman'
+            }
+        },
+        {'new_name': 'VRP Research Plan and Theory of Change Document - Arun Jose',
+        'replacements': {
+                '{author_name}': 'Arun Jose'
+            }
+        },
+    ]
+
+
+    for thing in new:
+        kwargs = {**gdocs, **thing}
+
+        copy_document_and_edit(**kwargs)
+
+    # copy_document_and_edit(**gdocs)
