@@ -168,12 +168,14 @@ if __name__ == '__main__':
 
 
     from utils import get_slack_token
+    from time import sleep
 
-    workspace = 'meridian'
-    channel = 'hannes-adeline-rm'
+    for channel in ['hannes-twm-rm', 'hannes-jp-rm']:
+        sleep(5)
+        workspace = 'meridian'
 
-    slack_token = get_slack_token(workspace)
+        slack_token = get_slack_token(workspace)
 
-    member_ids = get_channel_member_ids(channel, slack_token)
+        member_ids = get_channel_member_ids(channel, slack_token)
 
-    print(member_ids)
+        print(member_ids)
