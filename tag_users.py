@@ -165,17 +165,20 @@ def tag_users(data, user_dict):
 
 
 if __name__ == '__main__':
-
-
+    import argparse
     from utils import get_slack_token
-    from time import sleep
 
-    for channel in ['hannes-twm-rm', 'hannes-jp-rm']:
-        sleep(5)
-        workspace = 'meridian'
+    parser = argparse.ArgumentParser(description='Get Slack channel member IDs')
+    parser.add_argument('-w', '--workspace',
+                        default='meridian',
+                        help='Slack workspace name (default: meridian)')
+    parser.add_argument('-c', '--channel',
+                        default='hannes-dev-channel',
+                        help='Slack channel name (default: hannes-dev-channel)')
 
-        slack_token = get_slack_token(workspace)
+    args = parser.parse_args()
 
-        member_ids = get_channel_member_ids(channel, slack_token)
+    slack_token = get_slack_token(args.workspace)
+    member_ids = get_channel_member_ids(args.channel, slack_token)
 
-        print(member_ids)
+    print(member_ids)

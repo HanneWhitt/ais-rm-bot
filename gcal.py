@@ -114,9 +114,9 @@ def find_next_event(event_name, calendar_id='primary', days_ahead=30):
         print(f"No events found matching '{event_name}'")
         return None
 
-    # Find exact or partial match
+    # Find exact match
     for event in events:
-        if event_name.lower() in event.get('summary', '').lower():
+        if event_name.lower() == event.get('summary', '').lower():
             return event
 
     return None
@@ -143,7 +143,7 @@ def get_event_time(event):
         return datetime.fromisoformat(start)
 
 
-def print_event(event):
+def print_event(event, calendar_id='primary'):
     """Pretty print an event"""
     summary = event.get('summary', 'No Title')
     start_time = get_event_time(event)
@@ -152,6 +152,7 @@ def print_event(event):
 
     print(f"\n{'='*60}")
     print(f"Event: {summary}")
+    print(f"Calendar: {calendar_id}")
     print(f"Start: {start_time.strftime('%Y-%m-%d %H:%M')}")
     print(f"Location: {location}")
     print(f"Description: {description[:100]}{'...' if len(description) > 100 else ''}")
@@ -187,7 +188,7 @@ if __name__ == '__main__':
 
         if events:
             for event in events:
-                print_event(event)
+                print_event(event, calendar_id=args.calendar)
         else:
             print("No upcoming events found.")
 
@@ -200,7 +201,7 @@ if __name__ == '__main__':
         )
 
         if event:
-            print_event(event)
+            print_event(event, calendar_id=args.calendar)
         else:
             print(f"No event found matching '{args.find}'")
 
@@ -211,6 +212,6 @@ if __name__ == '__main__':
 
         if events:
             for event in events:
-                print_event(event)
+                print_event(event, calendar_id='primary')
         else:
             print("No upcoming events found.")
