@@ -116,7 +116,7 @@ def find_next_event(event_name, calendar_id='primary', days_ahead=30):
 
     # Find exact match
     for event in events:
-        if event_name.lower() == event.get('summary', '').lower():
+        if event_name.lower() == event.get('summary', '').lower().strip():
             return event
 
     return None
